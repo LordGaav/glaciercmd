@@ -96,7 +96,7 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 	</target>
 	
 	<!-- Create a clean dist directory -->
-	<target name="dist" depends="executable,man-page" description="Create a clean dist directory">
+	<target name="dist" depends="executable,man-page,readme" description="Create a clean dist directory">
 		<delete dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}/${docs.dir}"/>
@@ -113,6 +113,7 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 		</copy>
 
 		<copy file="${docs.dir}/${executable}.1" tofile="${dist.dir}/${docs.dir}/${executable}.1" />
+		<copy file="README.md" tofile="${dist.dir}/README.md" />
 
 		<jar destfile="${dist.dir}/${executable}.jar" basedir="${class.root}">
 			<manifest>
@@ -141,6 +142,10 @@ java -jar ${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 
 	<target name="man-page" depends="compile" description="Generate man page">
 		<java classpath="${project.class.path}" classname="nl.nekoconeko.glaciercmd.docs.ManPage" output="${docs.dir}/${executable}.1" />
+	</target>
+
+	<target name="readme" depends="compile" description="Generate README">
+		<java classpath="${project.class.path}" classname="nl.nekoconeko.glaciercmd.docs.Readme" output="README.md" />
 	</target>
 
 	<target name="package-tar" depends="dist" description="Create tarball from dist">
