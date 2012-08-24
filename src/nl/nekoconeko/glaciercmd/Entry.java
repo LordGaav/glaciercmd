@@ -44,6 +44,7 @@ public class Entry {
 		gc.setEndpoint(Configuration.getRegion().getEndpoint());
 
 		if (Configuration.getMode() == ModeType.LIST) {
+			Configuration.load(ModeType.LIST, args);
 			if (!Configuration.hasListType()) {
 				Formatter.printErrorLine("Make sure you specify a list type!");
 				System.exit(-1);
