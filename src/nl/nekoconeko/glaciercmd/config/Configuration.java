@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import nl.nekoconeko.glaciercmd.Formatter;
+import nl.nekoconeko.glaciercmd.constants.AWSGlacierRegion;
 import nl.nekoconeko.glaciercmd.types.ListType;
 import nl.nekoconeko.glaciercmd.types.ModeType;
 
@@ -107,11 +108,11 @@ public class Configuration {
 		return Configuration.has("region");
 	}
 
-	public static String getRegion() {
-		return (String) Configuration.valueOrNull("region");
+	public static AWSGlacierRegion getRegion() {
+		return (AWSGlacierRegion) Configuration.valueOrNull("region");
 	}
 
-	public static void setRegion(String region) {
+	public static void setRegion(AWSGlacierRegion region) {
 		Configuration.set("region", region);
 	}
 
@@ -156,6 +157,10 @@ public class Configuration {
 				} else if (opt.getLongOpt().equals("list")) {
 					Configuration.setMode(ModeType.LIST);
 					Configuration.setListType(ListType.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
+				} else if (opt.getLongOpt().equals("region")) {
+					Configuration.setRegion(AWSGlacierRegion.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
+				} else {
+					Configuration.set(opt.getLongOpt(), cli.getOptionValue(opt.getLongOpt()));
 				}
 			}
 		}
@@ -182,6 +187,8 @@ public class Configuration {
 			} else if (key.equals("list")) {
 				Configuration.setMode(ModeType.LIST);
 				Configuration.setListType(ListType.valueOf(conf.getString(key).toUpperCase()));
+			} else if (key.equals("region")) {
+				Configuration.setRegion(AWSGlacierRegion.valueOf(conf.getString(key).toUpperCase()));
 			} else {
 				Configuration.set(key, conf.getString(key));
 			}
