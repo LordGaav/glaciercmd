@@ -9,6 +9,7 @@ import nl.nekoconeko.glaciercmd.types.ModeType;
 import org.apache.commons.cli.CommandLine;
 
 import com.amazonaws.services.glacier.model.DescribeVaultOutput;
+import com.amazonaws.services.glacier.model.DescribeVaultResult;
 
 public class Entry {
 
@@ -58,6 +59,12 @@ public class Entry {
 				}
 				break;
 			case ARCHIVE:
+				if (!Configuration.hasVault()) {
+					Formatter.printErrorLine("A vault has to be specified to list archives");
+					System.exit(-1);
+				}
+				DescribeVaultResult vault = gc.describeVault(Configuration.getVault());
+				Formatter.printInfoLine(String.format("[%s] %d items, %d bytes, %s last checked", vault.getVaultName(), vault.getNumberOfArchives(), vault.getSizeInBytes(), vault.getLastInventoryDate()));
 				break;
 			default:
 				Formatter.printErrorLine("Invalid list type selected");
