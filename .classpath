@@ -22,5 +22,15 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jackson/jackson-core-asl-1.8.7.jar"/>
 	<classpathentry kind="lib" path="lib/jackson/jackson-mapper-asl-1.8.7.jar"/>
+	<classpathentry kind="lib" path="lib/apache-commons/commons-lang-2.6.jar" sourcepath="lib/apache-commons/commons-lang-2.6-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/glaciercmd/lib/apache-commons/commons-lang-2.6-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/apache-commons/commons-configuration-1.8.jar" sourcepath="lib/apache-commons/commons-configuration-1.8-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/glaciercmd/lib/apache-commons/commons-configuration-1.8-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
