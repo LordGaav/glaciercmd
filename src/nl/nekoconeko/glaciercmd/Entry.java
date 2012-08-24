@@ -62,6 +62,23 @@ public class Entry {
 				Formatter.printErrorLine("Invalid list type selected");
 				System.exit(-1);
 			}
+		} else if (Configuration.getMode() == ModeType.INITIATEINVENTORY) {
+			Configuration.load(ModeType.INITIATEINVENTORY, args);
+
+			Formatter.printInfoLine("Requesting an inventory from AWS Glacier...");
+			Formatter.printInfoLine(String.format("Job has been created with id: %s", gc.initiateRetrieveVaultInventory(Configuration.getVault())));
+		} else if (Configuration.getMode() == ModeType.GETINVENTORY) {
+			Configuration.load(ModeType.GETINVENTORY, args);
+
+			Formatter.printInfoLine(String.format("Retrieving inventory with id %s from AWS Glacier...", Configuration.getJobId()));
+			try {
+				Formatter.printInfoLine(gc.retrieveVaultInventoryJob(Configuration.getVault(), Configuration.getJobId()));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} else {
+			Formatter.printErrorLine("WHA-HUH!?");
+			System.exit(-1);
 		}
 	}
 }
