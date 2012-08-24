@@ -96,7 +96,7 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 	</target>
 	
 	<!-- Create a clean dist directory -->
-	<target name="dist" depends="executable" description="Create a clean dist directory">
+	<target name="dist" depends="executable,man-page" description="Create a clean dist directory">
 		<delete dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}/${docs.dir}"/>
@@ -111,6 +111,8 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 				<exclude name="**/*-sources.jar"/>
 			</fileset>
 		</copy>
+
+		<copy file="${docs.dir}/${executable}.1" tofile="${dist.dir}/${docs.dir}/${executable}.1" />
 
 		<jar destfile="${dist.dir}/${executable}.jar" basedir="${class.root}">
 			<manifest>
@@ -135,6 +137,10 @@ java -jar ${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 			<regexp pattern="BUILD_VERSION = &quot;.*&quot;;"/>
 			<substitution expression="BUILD_VERSION = &quot;${version}&quot;;"/>
 		</replaceregexp>
+	</target>
+
+	<target name="man-page" depends="compile" description="Generate man page">
+		<java classpath="${project.class.path}" classname="nl.nekoconeko.glaciercmd.docs.ManPage" output="${docs.dir}/${executable}.1" />
 	</target>
 
 	<target name="package-tar" depends="dist" description="Create tarball from dist">
