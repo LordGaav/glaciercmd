@@ -116,6 +116,30 @@ public class Configuration {
 		Configuration.set("region", region);
 	}
 
+	public static boolean hasVault() {
+		return Configuration.has("vault");
+	}
+
+	public static String getVault() {
+		return (String) Configuration.valueOrNull("vault");
+	}
+
+	public static void setVault(String vault) {
+		Configuration.setVault(vault);
+	}
+
+	public static boolean hasJobId() {
+		return Configuration.has("job-id");
+	}
+
+	public static String getJobId() {
+		return (String) Configuration.valueOrNull("job-id");
+	}
+
+	public static void setJobId(String jobid) {
+		Configuration.setVault(jobid);
+	}
+
 	public static CommandLine parseCli(ModeType mode, String[] args) {
 		CommandLine cli = null;
 		Options opt = ConfigModes.getMode(mode);
@@ -157,6 +181,10 @@ public class Configuration {
 				} else if (opt.getLongOpt().equals("list")) {
 					Configuration.setMode(ModeType.LIST);
 					Configuration.setListType(ListType.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
+				} else if (opt.getLongOpt().equals("init-inventory")) {
+					Configuration.setMode(ModeType.INITIATEINVENTORY);
+				} else if (opt.getLongOpt().equals("get-inventory")) {
+					Configuration.setMode(ModeType.GETINVENTORY);
 				} else if (opt.getLongOpt().equals("region")) {
 					Configuration.setRegion(AWSGlacierRegion.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
 				} else {
