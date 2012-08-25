@@ -175,8 +175,12 @@ java -jar ${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 	<target name="package-tar" depends="dist" description="Create tarball from dist">
 		<move file="${dist.dir}" tofile="${executable}-${version}" />
 		<tar destfile="${executable}-${version}.tar.bz2" compression="bzip2">
+			<tarfileset dir="." preserveleadingslashes="false" mode="755">
+				<include name="${executable}-${version}/${executable}" />
+			</tarfileset>
 			<tarfileset dir="." preserveleadingslashes="false">
 				<include name="${executable}-${version}/**" />
+				<exclude name="${executable}-${version}/${executable}" />
 			</tarfileset>
 		</tar>
 		<move tofile="${dist.dir}" file="${executable}-${version}" />
