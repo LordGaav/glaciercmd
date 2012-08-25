@@ -158,6 +158,54 @@ public class Configuration {
 		Configuration.set("job-id", jobid);
 	}
 
+	public static boolean hasInputFile() {
+		return Configuration.has("input");
+	}
+
+	public static String getInputFile() {
+		return (String) Configuration.valueOrNull("input");
+	}
+
+	public static void setInputFile(String input) {
+		Configuration.set("input", input);
+	}
+
+	public static boolean hasOutputFile() {
+		return Configuration.has("output");
+	}
+
+	public static String getOutputFile() {
+		return (String) Configuration.valueOrNull("output");
+	}
+
+	public static void setOutputFile(String output) {
+		Configuration.set("output", output);
+	}
+
+	public static boolean hasDescription() {
+		return Configuration.has("description");
+	}
+
+	public static String getDescription() {
+		return (String) Configuration.valueOrNull("description");
+	}
+
+	public static void setDescription(String description) {
+		Configuration.set("description", description);
+	}
+
+	public static boolean hasArchive() {
+		return Configuration.has("archive");
+	}
+
+	public static String getArchive() {
+		return (String) Configuration.valueOrNull("archive");
+	}
+
+	public static void setArchive(String archive) {
+		Configuration.set("archive", archive);
+	}
+
 	public static CommandLine parseCli(ModeType mode, String[] args) {
 		CommandLine cli = null;
 		Options opt = ConfigModes.getMode(mode);
@@ -203,6 +251,10 @@ public class Configuration {
 					Configuration.setMode(ModeType.INITIATEINVENTORY);
 				} else if (opt.getLongOpt().equals("get-inventory")) {
 					Configuration.setMode(ModeType.GETINVENTORY);
+				} else if (opt.getLongOpt().equals("upload")) {
+					Configuration.setMode(ModeType.UPLOAD);
+				} else if (opt.getLongOpt().equals("download")) {
+					Configuration.setMode(ModeType.DOWNLOAD);
 				} else if (opt.getLongOpt().equals("region")) {
 					Configuration.setRegion(AWSGlacierRegion.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
 				} else {

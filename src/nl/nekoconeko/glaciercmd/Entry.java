@@ -30,6 +30,7 @@ import org.apache.commons.cli.CommandLine;
 
 import com.amazonaws.services.glacier.model.DescribeVaultOutput;
 import com.amazonaws.services.glacier.model.DescribeVaultResult;
+import com.amazonaws.services.glacier.transfer.UploadResult;
 
 public class Entry {
 
@@ -118,6 +119,20 @@ public class Entry {
 				a.append(String.format("SHA256 Hash: %s\n", arch.SHA256TreeHash));
 				Formatter.printBorderedInfo(a.toString());
 			}
+
+		} else if (Configuration.getMode() == ModeType.UPLOAD) {
+			Configuration.load(ModeType.UPLOAD, args);
+
+			Formatter.printInfoLine(String.format("Uploading '%s' to vault '%s'", Configuration.getInputFile(), Configuration.getVault()));
+			UploadResult res = gc.uploadFile(Configuration.getVault(), Configuration.getInputFile(), Configuration.getDescription());
+			Formatter.printInfoLine(String.format("Upload completed, archive has ID: %s", res.getArchiveId()));
+		} else if (Configuration.getMode() == ModeType.DOWNLOAD) {
+			Configuration.load(ModeType.DOWNLOAD, args);
+
+			Formatter.printInfoLine(String.format("Download '%s' from vault '%s', saving as '%s'", Configuration.getArchive(), Configuration.getVault(), Configuration.getOutputFile()));
+			Formatter.printInfoLine("Note that this will take several hours, please be patient...");
+			gc.downloadFile(Configuration.getVault(), Configuration.getArchive(), Configuration.getOutputFile());
+			Formatter.printInfoLine("Download completed");
 		} else {
 			Formatter.printErrorLine("WHA-HUH!?");
 			System.exit(-1);
