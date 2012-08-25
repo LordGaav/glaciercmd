@@ -5,6 +5,8 @@ import java.util.List;
 import nl.nekoconeko.glaciercmd.config.ConfigModes;
 import nl.nekoconeko.glaciercmd.config.Configuration;
 import nl.nekoconeko.glaciercmd.types.ModeType;
+import nl.nekoconeko.glaciercmd.types.VaultInventory;
+import nl.nekoconeko.glaciercmd.types.VaultInventory.Archive;
 
 import org.apache.commons.cli.CommandLine;
 
@@ -71,10 +73,24 @@ public class Entry {
 			Configuration.load(ModeType.GETINVENTORY, args);
 
 			Formatter.printInfoLine(String.format("Retrieving inventory with id %s from AWS Glacier...", Configuration.getJobId()));
+			VaultInventory inv = null;
 			try {
-				Formatter.printInfoLine(gc.retrieveVaultInventoryJob(Configuration.getVault(), Configuration.getJobId()));
+				inv = gc.retrieveVaultInventoryJob(Configuration.getVault(), Configuration.getJobId());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+
+			Formatter.printInfoLine(String.format("Vault ARN: %s", inv.VaultARN));
+			Formatter.printInfoLine(String.format("Last Inventory Date: %s", inv.InventoryDate.toString()));
+			Formatter.printInfoLine(String.format("Vault contains %d archives:", inv.ArchiveList.size()));
+			for (Archive arch : inv.ArchiveList) {
+				StringBuilder a = new StringBuilder();
+				a.append(String.format("Archive ID: %s\n", arch.ArchiveId));
+				a.append(String.format("Archive Description: %s\n", arch.ArchiveDescription));
+				a.append(String.format("Archive Size: %d bytes\n", arch.Size));
+				a.append(String.format("Creation Date: %s\n", arch.CreationDate.toString()));
+				a.append(String.format("SHA256 Hash: %s\n", arch.SHA256TreeHash));
+				Formatter.printBorderedInfo(a.toString());
 			}
 		} else {
 			Formatter.printErrorLine("WHA-HUH!?");

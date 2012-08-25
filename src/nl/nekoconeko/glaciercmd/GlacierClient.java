@@ -2,7 +2,10 @@ package nl.nekoconeko.glaciercmd;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
+import nl.nekoconeko.glaciercmd.types.VaultInventory;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -84,7 +87,7 @@ public class GlacierClient {
 		return initJobResult.getJobId();
 	}
 
-	protected String retrieveVaultInventoryJob(String vault, String jobId) throws InterruptedException {
+	protected VaultInventory retrieveVaultInventoryJob(String vault, String jobId) throws InterruptedException {
 		GetJobOutputRequest job = new GetJobOutputRequest();
 		job.setVaultName(vault);
 		job.setJobId(jobId);
@@ -121,13 +124,24 @@ public class GlacierClient {
 				Formatter.printInfoLine(String.format("Job returned code %d, waiting 30 seconds", code));
 				break;
 			}
-			Thread.sleep(1000 * 60);
+			if (!stop) {
+				Thread.sleep(1000 * 60);
+			}
 		}
 
+		String json = "";
+		VaultInventory inv = null;
 		try {
-			return new java.util.Scanner(res.getBody()).useDelimiter("\\A").next();
+			json = new java.util.Scanner(res.getBody()).useDelimiter("\\A").next();
+			inv = VaultInventory.loadFromJSON(json);
 		} catch (java.util.NoSuchElementException e) {
-			return "";
+			Formatter.printErrorLine("Amazon AWS response was empty");
+			System.exit(1);
+		} catch (IOException ioe) {
+			Formatter.printErrorLine("Failed to deserialize JSON, dumping...");
+			Formatter.printBorderedError(json);
+			System.exit(1);
 		}
+		return inv;
 	}
 }
