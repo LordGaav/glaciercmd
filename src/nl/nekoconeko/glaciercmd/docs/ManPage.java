@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012 Nick Douma < n.douma [at] nekoconeko . nl >
+ *
+ * This file is part of glaciercmd.
+ *
+ * glaciercmd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * glaciercmd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with glaciercmd. If not, see <http://www.gnu.org/licenses/>.
+ */
 package nl.nekoconeko.glaciercmd.docs;
 
 import java.io.PrintWriter;
@@ -13,6 +31,7 @@ import nl.nekoconeko.glaciercmd.Version;
 import nl.nekoconeko.glaciercmd.config.ConfigModeSorter;
 import nl.nekoconeko.glaciercmd.config.ConfigModes;
 import nl.nekoconeko.glaciercmd.config.ConfigParameter;
+import nl.nekoconeko.glaciercmd.constants.AWSGlacierRegion;
 import nl.nekoconeko.glaciercmd.types.ModeType;
 
 import org.apache.commons.cli.HelpFormatter;
@@ -20,7 +39,7 @@ import org.apache.commons.cli.HelpFormatter;
 public class ManPage {
 	private String getHeaderSection() {
 		DateFormat df = new SimpleDateFormat("dd MMM yyyy");
-		return String.format(".TH %s %d \"%s\" \"%s-%s\" \"%s\"\n", Version.PROJECT_NAME, 1, df.format(new Date()), Version.RELEASE_VERSION, Version.BUILD_VERSION, "");
+		return String.format(".TH %s %d \"%s\" \"%s-%s\" \"%s\"\n", Version.PROJECT_NAME, 1, "Licensed under GPLv3", Version.RELEASE_VERSION, Version.BUILD_VERSION, df.format(new Date()));
 	}
 
 	private String getNameSection() {
@@ -130,7 +149,7 @@ public class ManPage {
 		section.append("region=ireland\n\n");
 		section.append(".RE\n");
 		section.append("Configuration options are parsed in the following order: \n\n");
-		section.append(".IP 1 4");
+		section.append(".IP 1 4\n");
 		section.append("The\n");
 		section.append(".I \\-c\n");
 		section.append("option.\n");
@@ -145,7 +164,10 @@ public class ManPage {
 	private String getBugsSection() {
 		StringBuilder section = new StringBuilder();
 		section.append(".SH BUGS\n");
-		section.append("No major known bugs exist at this time.\n");
+		section.append(".IP 1 4\n");
+		section.append("The DOWNLOAD mode currently only works for the VIRGINIA region, because of a bug in the AWS SDK. ");
+		section.append("All other regions will cause an exception, because the SDK contains hardcoded references to the VIRGINIA region.\n");
+		section.append(".RE\n\n");
 		return section.toString();
 	}
 
@@ -158,6 +180,21 @@ public class ManPage {
 		return section.toString();
 	}
 
+	private String getRegionsSection() {
+		StringBuilder section = new StringBuilder();
+		section.append(".SH REGIONS\n");
+		section.append(String.format(".B %s\n", Version.PROJECT_NAME));
+		section.append("supports the following AWS Glacier regions:\n");
+		int i = 1;
+		for (AWSGlacierRegion region : AWSGlacierRegion.values()) {
+			section.append(String.format(".IP %d 4\n", i));
+			section.append(String.format("%s - %s\n", region.name(), region.getEndpoint()));
+			i++;
+		}
+		section.append(".RE\n\n");
+		return section.toString();
+	}
+
 	public static void main(String[] args) {
 		ManPage m = new ManPage();
 		System.out.print(m.getHeaderSection());
@@ -166,6 +203,7 @@ public class ManPage {
 		System.out.print(m.getSynopsisSection());
 		System.out.print(m.getOptionsSection());
 		System.out.print(m.getConfigurationSection());
+		System.out.print(m.getRegionsSection());
 		System.out.print(m.getBugsSection());
 		System.out.print(m.getAuthorsSection());
 	}

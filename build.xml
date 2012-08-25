@@ -1,4 +1,24 @@
 <?xml version="1.0"?>
+<!--
+
+ Copyright (c) 2012 Nick Douma < n.douma [at] nekoconeko . nl >
+
+ This file is part of glaciercmd.
+
+ glaciercmd is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ glaciercmd is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with glaciercmd. If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <project name="glaciercmd" basedir="." default="dist"> 
 
 	<!-- Set up properties containing important project directories --> 
@@ -67,6 +87,8 @@
 		       includeantruntime="false"
 			   classpath="${project.class.path}"
 		/>
+		<mkdir dir="${class.root}/META-INF" />
+		<copy file="LICENSE" tofile="${class.root}/META-INF/LICENSE" />
 	</target>
 	
 	<!-- Create an easy to use bash file -->
@@ -114,14 +136,16 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 
 		<copy file="${docs.dir}/${executable}.1" tofile="${dist.dir}/${docs.dir}/${executable}.1" />
 		<copy file="README.md" tofile="${dist.dir}/README.md" />
+		<copy file="LICENSE" tofile="${dist.dir}/LICENSE" />
 
 		<jar destfile="${dist.dir}/${executable}.jar" basedir="${class.root}">
 			<manifest>
 				<attribute name="Implementation-Vendor" value="Nekoconeko.nl"/>
 				<attribute name="Implementation-Title" value="${executable}"/>
-				<attribute name="Implementation-Version" value="0.1"/>
+				<attribute name="Implementation-Version" value="${version}"/>
 				<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Sealed" value="false"/>
+				<attribute name="License" value="GPLv3"/>
+				<attribute name="Sealed" value="true"/>
 				<attribute name="Class-Path" value="${jar.class.path}"/>
 				<attribute name="Main-Class" value="${root.package}.${entry.point}"/>
 			</manifest>
@@ -151,8 +175,12 @@ java -jar ${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 	<target name="package-tar" depends="dist" description="Create tarball from dist">
 		<move file="${dist.dir}" tofile="${executable}-${version}" />
 		<tar destfile="${executable}-${version}.tar.bz2" compression="bzip2">
+			<tarfileset dir="." preserveleadingslashes="false" mode="755">
+				<include name="${executable}-${version}/${executable}" />
+			</tarfileset>
 			<tarfileset dir="." preserveleadingslashes="false">
 				<include name="${executable}-${version}/**" />
+				<exclude name="${executable}-${version}/${executable}" />
 			</tarfileset>
 		</tar>
 		<move tofile="${dist.dir}" file="${executable}-${version}" />

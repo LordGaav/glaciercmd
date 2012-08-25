@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012 Nick Douma < n.douma [at] nekoconeko . nl >
+ *
+ * This file is part of glaciercmd.
+ *
+ * glaciercmd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * glaciercmd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with glaciercmd. If not, see <http://www.gnu.org/licenses/>.
+ */
 package nl.nekoconeko.glaciercmd.config;
 
 import java.net.InetAddress;
@@ -116,6 +134,78 @@ public class Configuration {
 		Configuration.set("region", region);
 	}
 
+	public static boolean hasVault() {
+		return Configuration.has("vault");
+	}
+
+	public static String getVault() {
+		return (String) Configuration.valueOrNull("vault");
+	}
+
+	public static void setVault(String vault) {
+		Configuration.set("vault", vault);
+	}
+
+	public static boolean hasJobId() {
+		return Configuration.has("job-id");
+	}
+
+	public static String getJobId() {
+		return (String) Configuration.valueOrNull("job-id");
+	}
+
+	public static void setJobId(String jobid) {
+		Configuration.set("job-id", jobid);
+	}
+
+	public static boolean hasInputFile() {
+		return Configuration.has("input");
+	}
+
+	public static String getInputFile() {
+		return (String) Configuration.valueOrNull("input");
+	}
+
+	public static void setInputFile(String input) {
+		Configuration.set("input", input);
+	}
+
+	public static boolean hasOutputFile() {
+		return Configuration.has("output");
+	}
+
+	public static String getOutputFile() {
+		return (String) Configuration.valueOrNull("output");
+	}
+
+	public static void setOutputFile(String output) {
+		Configuration.set("output", output);
+	}
+
+	public static boolean hasDescription() {
+		return Configuration.has("description");
+	}
+
+	public static String getDescription() {
+		return (String) Configuration.valueOrNull("description");
+	}
+
+	public static void setDescription(String description) {
+		Configuration.set("description", description);
+	}
+
+	public static boolean hasArchive() {
+		return Configuration.has("archive");
+	}
+
+	public static String getArchive() {
+		return (String) Configuration.valueOrNull("archive");
+	}
+
+	public static void setArchive(String archive) {
+		Configuration.set("archive", archive);
+	}
+
 	public static CommandLine parseCli(ModeType mode, String[] args) {
 		CommandLine cli = null;
 		Options opt = ConfigModes.getMode(mode);
@@ -157,6 +247,18 @@ public class Configuration {
 				} else if (opt.getLongOpt().equals("list")) {
 					Configuration.setMode(ModeType.LIST);
 					Configuration.setListType(ListType.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
+				} else if (opt.getLongOpt().equals("init-inventory")) {
+					Configuration.setMode(ModeType.INITIATEINVENTORY);
+				} else if (opt.getLongOpt().equals("get-inventory")) {
+					Configuration.setMode(ModeType.GETINVENTORY);
+				} else if (opt.getLongOpt().equals("upload")) {
+					Configuration.setMode(ModeType.UPLOAD);
+				} else if (opt.getLongOpt().equals("download")) {
+					Configuration.setMode(ModeType.DOWNLOAD);
+				} else if (opt.getLongOpt().equals("init-download")) {
+					Configuration.setMode(ModeType.INITIATEDOWNLOAD);
+				} else if (opt.getLongOpt().equals("get-download")) {
+					Configuration.setMode(ModeType.GETDOWNLOAD);
 				} else if (opt.getLongOpt().equals("region")) {
 					Configuration.setRegion(AWSGlacierRegion.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
 				} else {
