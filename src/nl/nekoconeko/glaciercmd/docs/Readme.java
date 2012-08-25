@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012 Nick Douma < n.douma [at] nekoconeko . nl >
+ *
+ * This file is part of glaciercmd.
+ *
+ * glaciercmd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * glaciercmd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with glaciercmd. If not, see <http://www.gnu.org/licenses/>.
+ */
 package nl.nekoconeko.glaciercmd.docs;
 
 import java.io.PrintWriter;
@@ -72,6 +90,8 @@ public class Readme {
 		section.append("*-k -s -r* ");
 		section.append("or by creating a configuration file and specifying it with ");
 		section.append("*-c config-file*\n\n");
+		section.append(String.format("**%s** is licensed under the GPLv3 license. For more information, see the *LICENSE* file.\n", Version.PROJECT_NAME));
+		section.append(String.format("This project uses libraries and routines which may have a different license. Refer to the included licenses in the source files and/or JAR files for more information.\n\n"));
 		return section.toString();
 	}
 
