@@ -148,7 +148,7 @@ public class ManPage {
 		section.append("region=ireland\n\n");
 		section.append(".RE\n");
 		section.append("Configuration options are parsed in the following order: \n\n");
-		section.append(".IP 1 4");
+		section.append(".IP 1 4\n");
 		section.append("The\n");
 		section.append(".I \\-c\n");
 		section.append("option.\n");
@@ -163,7 +163,10 @@ public class ManPage {
 	private String getBugsSection() {
 		StringBuilder section = new StringBuilder();
 		section.append(".SH BUGS\n");
-		section.append("No major known bugs exist at this time.\n");
+		section.append(".IP 1 4\n");
+		section.append("The DOWNLOAD mode currently only works for the VIRGINIA region, because of a bug in the AWS SDK. ");
+		section.append("All other regions will cause an exception, because the SDK contains hardcoded references to the VIRGINIA region.\n");
+		section.append(".RE\n\n");
 		return section.toString();
 	}
 
