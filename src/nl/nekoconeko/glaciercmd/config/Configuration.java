@@ -143,7 +143,7 @@ public class Configuration {
 	}
 
 	public static void setVault(String vault) {
-		Configuration.setVault(vault);
+		Configuration.set("vault", vault);
 	}
 
 	public static boolean hasJobId() {
@@ -155,7 +155,7 @@ public class Configuration {
 	}
 
 	public static void setJobId(String jobid) {
-		Configuration.setVault(jobid);
+		Configuration.set("job-id", jobid);
 	}
 
 	public static CommandLine parseCli(ModeType mode, String[] args) {
