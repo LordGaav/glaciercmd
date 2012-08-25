@@ -70,7 +70,7 @@ Use this archive id
 
 Use a configuration file
 
-**-d** **--download** *arg* 
+**-d** **--download** 
 
 Download file from a vault. Note: this command will block until the file has been downloaded, and will probably take multiple hours.
 
@@ -82,7 +82,7 @@ Use this description
 
 Show help and examples
 
-**-i** **--init-inventory** *arg* 
+**-i** **--init-inventory** 
 
 Request an inventory from Glacier. This command returns a job id which can be fed to get-inventory.
 
@@ -90,7 +90,7 @@ Request an inventory from Glacier. This command returns a job id which can be fe
 
 Use this file as input
 
-**-j** **--get-inventory** *arg* 
+**-j** **--get-inventory** 
 
 Retrieve an inventory from Glacier. If the inventory is not yet available, this method will block until it is.
 
@@ -106,11 +106,11 @@ Amazon AWS user key
 
 List Glacier objects (vault|archive)
 
-**-m** **--init-download** *arg* 
+**-m** **--init-download** 
 
 Request a download from Glacier. This command returns a job id which can be fed to get-download.
 
-**-n** **--get-download** *arg* 
+**-n** **--get-download** 
 
 Retrieve a download from Glacier. If the download is not yet available, this method will block until it is.
 
@@ -126,7 +126,7 @@ Amazon AWS region
 
 Amazon AWS user secret
 
-**-u** **--upload** *arg* 
+**-u** **--upload** 
 
 Upload file into a vault
 
@@ -134,7 +134,7 @@ Upload file into a vault
 
 Select this vault
 
-**-v** **--version** *arg* 
+**-v** **--version** 
 
 Show version information
 
