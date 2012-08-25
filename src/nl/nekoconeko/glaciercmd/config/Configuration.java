@@ -255,6 +255,10 @@ public class Configuration {
 					Configuration.setMode(ModeType.UPLOAD);
 				} else if (opt.getLongOpt().equals("download")) {
 					Configuration.setMode(ModeType.DOWNLOAD);
+				} else if (opt.getLongOpt().equals("init-download")) {
+					Configuration.setMode(ModeType.INITIATEDOWNLOAD);
+				} else if (opt.getLongOpt().equals("get-download")) {
+					Configuration.setMode(ModeType.GETDOWNLOAD);
 				} else if (opt.getLongOpt().equals("region")) {
 					Configuration.setRegion(AWSGlacierRegion.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
 				} else {

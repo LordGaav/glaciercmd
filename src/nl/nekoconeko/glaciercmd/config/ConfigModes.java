@@ -49,8 +49,10 @@ public class ConfigModes {
 		ConfigParameter listmode = new ConfigParameter("l", "list", true, "TYPE", "List Glacier objects (vault|archive)");
 		ConfigParameter uploadmode = new ConfigParameter("u", "upload", false, "Upload file into a vault");
 		ConfigParameter downloadmode = new ConfigParameter("d", "download", false, "Download file from a vault. Note: this command will block until the file has been downloaded, and will probably take multiple hours.");
-		ConfigParameter initiateinventorymode = new ConfigParameter("i", "init-inventory", false, "Request an inventory from Glacier. This command returns a job id which can be fed to get-inventory");
+		ConfigParameter initiateinventorymode = new ConfigParameter("i", "init-inventory", false, "Request an inventory from Glacier. This command returns a job id which can be fed to get-inventory.");
 		ConfigParameter getinventorymode = new ConfigParameter("j", "get-inventory", false, "Retrieve an inventory from Glacier. If the inventory is not yet available, this method will block until it is.");
+		ConfigParameter initiatedownloadmode = new ConfigParameter("m", "init-download", false, "Request a download from Glacier. This command returns a job id which can be fed to get-download.");
+		ConfigParameter getdownloadmode = new ConfigParameter("n", "get-download", false, "Retrieve a download from Glacier. If the download is not yet available, this method will block until it is.");
 
 		// Selectors
 		ConfigParameter vault = new ConfigParameter("vault", true, "VAULT", "Select this vault");
@@ -70,6 +72,8 @@ public class ConfigModes {
 		modes.addOption(downloadmode);
 		modes.addOption(initiateinventorymode);
 		modes.addOption(getinventorymode);
+		modes.addOption(initiatedownloadmode);
+		modes.addOption(getdownloadmode);
 		modes.setRequired(true);
 
 		// Options for root
@@ -114,6 +118,19 @@ public class ConfigModes {
 		get_inventory.addRequiredOption(vault);
 		get_inventory.addRequiredOption(jobid);
 
+		// Options for initiate-download
+		ConfigMode init_download = new ConfigMode();
+		init_download.addRequiredOption(initiatedownloadmode);
+		init_download.addRequiredOption(vault);
+		init_download.addRequiredOption(archive);
+
+		// Options for get-download
+		ConfigMode get_download = new ConfigMode();
+		get_download.addRequiredOption(getdownloadmode);
+		get_download.addRequiredOption(vault);
+		get_download.addRequiredOption(jobid);
+		get_download.addRequiredOption(outputfile);
+
 		// Options for help
 		ConfigMode help = new ConfigMode();
 		help.addRequiredOption(helpmode);
@@ -130,6 +147,8 @@ public class ConfigModes {
 		ConfigModes.addMode(ModeType.DOWNLOAD, download);
 		ConfigModes.addMode(ModeType.INITIATEINVENTORY, init_inventory);
 		ConfigModes.addMode(ModeType.GETINVENTORY, get_inventory);
+		ConfigModes.addMode(ModeType.INITIATEDOWNLOAD, init_download);
+		ConfigModes.addMode(ModeType.GETDOWNLOAD, get_download);
 	}
 
 	private static void addMode(ModeType type, ConfigMode mode) {

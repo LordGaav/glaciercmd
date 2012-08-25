@@ -105,6 +105,7 @@ public class Entry {
 				inv = gc.retrieveVaultInventoryJob(Configuration.getVault(), Configuration.getJobId());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				System.exit(-1);
 			}
 
 			Formatter.printInfoLine(String.format("Vault ARN: %s", inv.VaultARN));
@@ -132,6 +133,21 @@ public class Entry {
 			Formatter.printInfoLine(String.format("Download '%s' from vault '%s', saving as '%s'", Configuration.getArchive(), Configuration.getVault(), Configuration.getOutputFile()));
 			Formatter.printInfoLine("Note that this will take several hours, please be patient...");
 			gc.downloadFile(Configuration.getVault(), Configuration.getArchive(), Configuration.getOutputFile());
+			Formatter.printInfoLine("Download completed");
+
+		} else if (Configuration.getMode() == ModeType.INITIATEDOWNLOAD) {
+			Configuration.load(ModeType.INITIATEDOWNLOAD, args);
+			Formatter.printInfoLine(String.format("Requesting download of archive '%s' from vault '%s'...", Configuration.getArchive(), Configuration.getVault()));
+			Formatter.printInfoLine(String.format("Job has been created with id: %s", gc.initiateDownload(Configuration.getVault(), Configuration.getArchive())));
+		} else if (Configuration.getMode() == ModeType.GETDOWNLOAD) {
+			Configuration.load(ModeType.GETDOWNLOAD, args);
+			Formatter.printInfoLine(String.format("Retrieving download with '%s' from AWS Glacier, and saving it to '%s'...", Configuration.getJobId(), Configuration.getOutputFile()));
+			try {
+				gc.retrieveDownloadJob(Configuration.getVault(), Configuration.getJobId(), Configuration.getOutputFile());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				System.exit(-1);
+			}
 			Formatter.printInfoLine("Download completed");
 		} else {
 			Formatter.printErrorLine("WHA-HUH!?");

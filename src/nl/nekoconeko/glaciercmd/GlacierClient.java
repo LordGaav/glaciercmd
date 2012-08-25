@@ -18,9 +18,14 @@
  */
 package nl.nekoconeko.glaciercmd;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import nl.nekoconeko.glaciercmd.types.VaultInventory;
@@ -105,7 +110,7 @@ public class GlacierClient {
 		return initJobResult.getJobId();
 	}
 
-	protected VaultInventory retrieveVaultInventoryJob(String vault, String jobId) throws InterruptedException {
+	private GetJobOutputResult waitForJobCompletion(String vault, String jobId) throws InterruptedException {
 		GetJobOutputRequest job = new GetJobOutputRequest();
 		job.setVaultName(vault);
 		job.setJobId(jobId);
@@ -147,6 +152,12 @@ public class GlacierClient {
 			}
 		}
 
+		return res;
+	}
+
+	protected VaultInventory retrieveVaultInventoryJob(String vault, String jobId) throws InterruptedException {
+		GetJobOutputResult res = this.waitForJobCompletion(vault, jobId);
+
 		String json = "";
 		VaultInventory inv = null;
 		try {
@@ -161,5 +172,47 @@ public class GlacierClient {
 			System.exit(1);
 		}
 		return inv;
+	}
+
+	protected String initiateDownload(String vault, String identifier) {
+		InitiateJobRequest initJobRequest = new InitiateJobRequest();
+		initJobRequest.setVaultName(vault);
+		initJobRequest.setJobParameters(new JobParameters().withType("archive-retrieval").withArchiveId(identifier));
+
+		InitiateJobResult initJobResult = this.client.initiateJob(initJobRequest);
+		return initJobResult.getJobId();
+	}
+
+	protected void retrieveDownloadJob(String vault, String jobId, String filename) throws InterruptedException {
+		GetJobOutputResult res = this.waitForJobCompletion(vault, jobId);
+
+		InputStream input = new BufferedInputStream(res.getBody());
+		OutputStream output = null;
+		try {
+			output = new BufferedOutputStream(new FileOutputStream(filename));
+
+			byte[] buffer = new byte[1024 * 1024];
+
+			int bytesRead = 0;
+			do {
+				bytesRead = input.read(buffer);
+				if (bytesRead <= 0)
+					break;
+				output.write(buffer, 0, bytesRead);
+			} while (bytesRead > 0);
+		} catch (IOException e) {
+			Formatter.printErrorLine(String.format("Unable to save archive: %s", e.getLocalizedMessage()));
+			System.exit(1);
+		} finally {
+			try {
+				input.close();
+			} catch (Exception e) {
+			}
+			try {
+				output.close();
+			} catch (Exception e) {
+			}
+		}
+		Formatter.printErrorLine("Retrieved archive to " + filename);
 	}
 }
