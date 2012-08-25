@@ -28,6 +28,7 @@ import nl.nekoconeko.glaciercmd.Version;
 import nl.nekoconeko.glaciercmd.config.ConfigModeSorter;
 import nl.nekoconeko.glaciercmd.config.ConfigModes;
 import nl.nekoconeko.glaciercmd.config.ConfigParameter;
+import nl.nekoconeko.glaciercmd.constants.AWSGlacierRegion;
 import nl.nekoconeko.glaciercmd.types.ModeType;
 
 import org.apache.commons.cli.HelpFormatter;
@@ -179,6 +180,20 @@ public class Readme {
 		return section.toString();
 	}
 
+	private String getRegionsSection() {
+		StringBuilder section = new StringBuilder();
+		section.append("REGIONS\n");
+		section.append("-------\n");
+		section.append(String.format("**%s** supports the following AWS Glacier regions:\n\n", Version.PROJECT_NAME));
+		int i = 1;
+		for (AWSGlacierRegion region : AWSGlacierRegion.values()) {
+			section.append(String.format("%d. %s - %s\n", i, region.name(), region.getEndpoint()));
+			i++;
+		}
+		section.append("\n");
+		return section.toString();
+	}
+
 	public static void main(String[] args) {
 		Readme r = new Readme();
 		System.out.print(r.getNameSection());
@@ -187,6 +202,7 @@ public class Readme {
 		System.out.print(r.getSynopsisSection());
 		System.out.print(r.getOptionsSection());
 		System.out.print(r.getConfigurationSection());
+		System.out.print(r.getRegionsSection());
 		System.out.print(r.getBugsSection());
 		System.out.print(r.getAuthorsSection());
 	}

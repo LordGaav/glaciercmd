@@ -31,6 +31,7 @@ import nl.nekoconeko.glaciercmd.Version;
 import nl.nekoconeko.glaciercmd.config.ConfigModeSorter;
 import nl.nekoconeko.glaciercmd.config.ConfigModes;
 import nl.nekoconeko.glaciercmd.config.ConfigParameter;
+import nl.nekoconeko.glaciercmd.constants.AWSGlacierRegion;
 import nl.nekoconeko.glaciercmd.types.ModeType;
 
 import org.apache.commons.cli.HelpFormatter;
@@ -179,6 +180,21 @@ public class ManPage {
 		return section.toString();
 	}
 
+	private String getRegionsSection() {
+		StringBuilder section = new StringBuilder();
+		section.append(".SH REGIONS\n");
+		section.append(String.format(".B %s\n", Version.PROJECT_NAME));
+		section.append("supports the following AWS Glacier regions:\n");
+		int i = 1;
+		for (AWSGlacierRegion region : AWSGlacierRegion.values()) {
+			section.append(String.format(".IP %d 4\n", i));
+			section.append(String.format("%s - %s\n", region.name(), region.getEndpoint()));
+			i++;
+		}
+		section.append(".RE\n\n");
+		return section.toString();
+	}
+
 	public static void main(String[] args) {
 		ManPage m = new ManPage();
 		System.out.print(m.getHeaderSection());
@@ -187,6 +203,7 @@ public class ManPage {
 		System.out.print(m.getSynopsisSection());
 		System.out.print(m.getOptionsSection());
 		System.out.print(m.getConfigurationSection());
+		System.out.print(m.getRegionsSection());
 		System.out.print(m.getBugsSection());
 		System.out.print(m.getAuthorsSection());
 	}
