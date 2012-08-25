@@ -29,11 +29,29 @@ public class ConfigModes {
 		helpmode.setOptionalArg(true);
 		ConfigParameter versionmode = new ConfigParameter("v", "version", false, "Show version information");
 		ConfigParameter listmode = new ConfigParameter("l", "list", true, "TYPE", "List Glacier objects (vault|archive)");
+		ConfigParameter uploadmode = new ConfigParameter("u", "upload", false, "Upload file into a vault");
+		ConfigParameter downloadmode = new ConfigParameter("d", "download", false, "Download file from a vault. Note: this command will block until the file has been downloaded, and will probably take multiple hours.");
+		ConfigParameter initiateinventorymode = new ConfigParameter("i", "init-inventory", false, "Request an inventory from Glacier. This command returns a job id which can be fed to get-inventory");
+		ConfigParameter getinventorymode = new ConfigParameter("j", "get-inventory", false, "Retrieve an inventory from Glacier. If the inventory is not yet available, this method will block until it is.");
+
+		// Selectors
+		ConfigParameter vault = new ConfigParameter("vault", true, "VAULT", "Select this vault");
+		ConfigParameter archive = new ConfigParameter("archive", true, "ARCHIVE", "Use this archive id");
+
+		// User input
+		ConfigParameter inputfile = new ConfigParameter("input", true, "INPUT", "Use this file as input");
+		ConfigParameter outputfile = new ConfigParameter("output", true, "OUTPUT", "Use this file as output");
+		ConfigParameter description = new ConfigParameter("description", true, "DESC", "Use this description");
+		ConfigParameter jobid = new ConfigParameter("job-id", true, "JOBID", "Use this job id");
 
 		OptionGroup modes = new OptionGroup();
 		modes.addOption(listmode);
 		modes.addOption(helpmode);
 		modes.addOption(versionmode);
+		modes.addOption(uploadmode);
+		modes.addOption(downloadmode);
+		modes.addOption(initiateinventorymode);
+		modes.addOption(getinventorymode);
 		modes.setRequired(true);
 
 		// Options for root
@@ -51,6 +69,32 @@ public class ConfigModes {
 		list.addOption(key);
 		list.addOption(secret);
 		list.addOption(config);
+		list.addOption(vault);
+
+		// Options for upload
+		ConfigMode upload = new ConfigMode();
+		upload.addRequiredOption(uploadmode);
+		upload.addRequiredOption(vault);
+		upload.addRequiredOption(inputfile);
+		upload.addRequiredOption(description);
+
+		// Options for download
+		ConfigMode download = new ConfigMode();
+		download.addRequiredOption(downloadmode);
+		download.addRequiredOption(vault);
+		download.addRequiredOption(archive);
+		download.addRequiredOption(outputfile);
+
+		// Options for initiate-inventory
+		ConfigMode init_inventory = new ConfigMode();
+		init_inventory.addRequiredOption(initiateinventorymode);
+		init_inventory.addRequiredOption(vault);
+
+		// Options for get-inventory
+		ConfigMode get_inventory = new ConfigMode();
+		get_inventory.addRequiredOption(getinventorymode);
+		get_inventory.addRequiredOption(vault);
+		get_inventory.addRequiredOption(jobid);
 
 		// Options for help
 		ConfigMode help = new ConfigMode();
@@ -64,6 +108,10 @@ public class ConfigModes {
 		ConfigModes.addMode(ModeType.HELP, help);
 		ConfigModes.addMode(ModeType.VERSION, version);
 		ConfigModes.addMode(ModeType.LIST, list);
+		ConfigModes.addMode(ModeType.UPLOAD, upload);
+		ConfigModes.addMode(ModeType.DOWNLOAD, download);
+		ConfigModes.addMode(ModeType.INITIATEINVENTORY, init_inventory);
+		ConfigModes.addMode(ModeType.GETINVENTORY, get_inventory);
 	}
 
 	private static void addMode(ModeType type, ConfigMode mode) {
