@@ -115,7 +115,7 @@ public class Readme {
 			if (o.getLongOpt() != null) {
 				section.append(String.format("**--%s** ", o.getLongOpt()));
 			}
-			if (o.hasArgName()) {
+			if (o.hasArg() && o.hasArgName()) {
 				section.append(String.format("*%s* ", o.getArgName()));
 			}
 			if (o.getDescription() != null) {

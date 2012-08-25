@@ -119,7 +119,7 @@ public class ManPage {
 			if (o.getLongOpt() != null) {
 				section.append(String.format(".B \\-\\-%s\n", o.getLongOpt()));
 			}
-			if (o.hasArgName()) {
+			if (o.hasArg() && o.hasArgName()) {
 				section.append(String.format(".I %s\n", o.getArgName()));
 			}
 			if (o.getDescription() != null) {
