@@ -7,6 +7,9 @@ There are several modes of operation, all of which can be found in the synopsis 
 
 All commands require proper authentication. This can be provided on the command line by using *-k -s -r* or by creating a configuration file and specifying it with *-c config-file*
 
+**glaciercmd** is licensed under the GPLv3 license. For more information, see the *LICENSE* file.
+This project uses libraries and routines which may have a different license. Refer to the included licenses in the source files and/or JAR files for more information.
+
 BUILDING
 --------
 Building **glaciercmd** requires the following:
@@ -19,7 +22,7 @@ Then you can simply call `ant dist` to create a *dist* folder with everything gl
 SYNOPSIS
 --------
 	
-	glaciercmd [-c <FILE>] -h <COMMAND> | -l <TYPE> | -v [-k <KEY>]  [-r <REGION>] [-s <SECRET>]
+	glaciercmd [-c <FILE>] -d | -h <COMMAND> | -i | -j | -l <TYPE> | -m | -n | -u | -v    [-k <KEY>]    [-r <REGION>] [-s <SECRET>]
 
 **HELP**
 
@@ -31,17 +34,69 @@ SYNOPSIS
 
 **LIST**
 
-	glaciercmd [-c <FILE>] [-k <KEY>] -l <TYPE> [-r <REGION>] [-s <SECRET>]
+	glaciercmd [-c <FILE>] [-k <KEY>] -l <TYPE> [-r <REGION>] [-s <SECRET>] --vault <VAULT>
+
+**UPLOAD**
+
+	glaciercmd --description <DESC> --input <INPUT> -u --vault <VAULT>
+
+**DOWNLOAD**
+
+	glaciercmd --archive <ARCHIVE> -d --output <OUTPUT> --vault <VAULT>
+
+**INITIATEDOWNLOAD**
+
+	glaciercmd --archive <ARCHIVE> -m --vault <VAULT>
+
+**INITIATEINVENTORY**
+
+	glaciercmd -i --vault <VAULT>
+
+**GETDOWNLOAD**
+
+	glaciercmd --job-id <JOBID> -n --output <OUTPUT> --vault <VAULT>
+
+**GETINVENTORY**
+
+	glaciercmd -j --job-id <JOBID> --vault <VAULT>
 
 OPTIONS
 -------
+**--archive** *ARCHIVE* 
+
+Use this archive id
+
 **-c** **--config** *FILE* 
 
 Use a configuration file
 
+**-d** **--download** *arg* 
+
+Download file from a vault. Note: this command will block until the file has been downloaded, and will probably take multiple hours.
+
+**--description** *DESC* 
+
+Use this description
+
 **-h** **--help** *COMMAND* 
 
 Show help and examples
+
+**-i** **--init-inventory** *arg* 
+
+Request an inventory from Glacier. This command returns a job id which can be fed to get-inventory.
+
+**--input** *INPUT* 
+
+Use this file as input
+
+**-j** **--get-inventory** *arg* 
+
+Retrieve an inventory from Glacier. If the inventory is not yet available, this method will block until it is.
+
+**--job-id** *JOBID* 
+
+Use this job id
 
 **-k** **--key** *KEY* 
 
@@ -51,6 +106,18 @@ Amazon AWS user key
 
 List Glacier objects (vault|archive)
 
+**-m** **--init-download** *arg* 
+
+Request a download from Glacier. This command returns a job id which can be fed to get-download.
+
+**-n** **--get-download** *arg* 
+
+Retrieve a download from Glacier. If the download is not yet available, this method will block until it is.
+
+**--output** *OUTPUT* 
+
+Use this file as output
+
 **-r** **--region** *REGION* 
 
 Amazon AWS region
@@ -58,6 +125,14 @@ Amazon AWS region
 **-s** **--secret** *SECRET* 
 
 Amazon AWS user secret
+
+**-u** **--upload** *arg* 
+
+Upload file into a vault
+
+**--vault** *VAULT* 
+
+Select this vault
 
 **-v** **--version** *arg* 
 
@@ -80,9 +155,19 @@ Configuration options are parsed in the following order:
 
 It is possible to override already specified configuration options by specifying them again. Duplicate options will take the value of the last one specified. An example configuration file can be found in the distribution package.
 
+REGIONS
+-------
+**glaciercmd** supports the following AWS Glacier regions:
+
+1. VIRGINIA - glacier.us-east-1.amazonaws.com
+2. OREGON - glacier.us-west-2.amazonaws.com
+3. CALIFORNIA - glacier.us-west-1.amazonaws.com
+4. IRELAND - glacier.eu-west-1.amazonaws.com
+5. TOKYO - glacier.ap-northeast-1.amazonaws.com
+
 BUGS
 ----
-No major known bugs exist at this time.
+1. The  DOWNLOAD  mode  currently only works for the VIRGINIA region, because of a bug in the AWS SDK. All other regions will cause an exception, because the SDK contains hardcoded references to the VIRGINIA region.
 
 AUTHOR
 ------

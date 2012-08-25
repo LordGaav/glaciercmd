@@ -30,5 +30,5 @@ public final class Version {
 	/**
 	 * Actual Git revision according to `git describe` during bumping
 	 */
-	public static final String BUILD_VERSION = "";
+	public static final String BUILD_VERSION = "3787977";
 }
