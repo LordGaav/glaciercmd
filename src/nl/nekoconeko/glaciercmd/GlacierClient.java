@@ -133,7 +133,7 @@ public class GlacierClient {
 				stop = true;
 				break;
 			case 400:
-				if (error.contains("InProgress")) {
+				if (error.contains("The job is not currently available for download")) {
 					Formatter.printInfoLine("Job is not finished yet, waiting...");
 				} else {
 					Formatter.printErrorLine("AWS returned code 400. Body Malformed.");

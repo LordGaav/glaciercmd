@@ -87,10 +87,6 @@ public class ConfigModes {
 		// Options for list
 		ConfigMode list = new ConfigMode();
 		list.addRequiredOption(listmode);
-		list.addOption(region);
-		list.addOption(key);
-		list.addOption(secret);
-		list.addOption(config);
 		list.addOption(vault);
 
 		// Options for upload

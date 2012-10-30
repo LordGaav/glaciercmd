@@ -51,7 +51,7 @@ public class VaultInventory {
 		public String ArchiveId;
 		public String ArchiveDescription;
 		public Date CreationDate;
-		public int Size;
+		public long Size;
 		public String SHA256TreeHash;
 
 		@Override

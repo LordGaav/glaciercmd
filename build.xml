@@ -152,7 +152,8 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 		</jar>
 
 		<echo file="${dist.dir}/${executable}" append="false">#!/bin/sh
-java -jar ${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
+DIR="$( cd "$( dirname "$0" )" &amp;&amp; pwd )"
+java -jar ${DIR}/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 		
 		<chmod file="${dist.dir}/${executable}" perm="a+x"/>
 	</target>
