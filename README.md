@@ -34,7 +34,7 @@ SYNOPSIS
 
 **LIST**
 
-	glaciercmd [-c <FILE>] [-k <KEY>] -l <TYPE> [-r <REGION>] [-s <SECRET>] --vault <VAULT>
+	glaciercmd -l <TYPE> --vault <VAULT>
 
 **UPLOAD**
 
