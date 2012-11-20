@@ -152,7 +152,12 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 		</jar>
 
 		<echo file="${dist.dir}/${executable}" append="false">#!/bin/sh
-DIR="$( cd "$( dirname "$0" )" &amp;&amp; pwd )"
+if [ -L $0 ]; then
+        FILE="$( readlink -f "$0" )"
+else
+        FILE="$0"
+fi
+DIR="$( cd "$( dirname "$FILE" )" &amp;&amp; pwd )"
 java -jar ${DIR}/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 		
 		<chmod file="${dist.dir}/${executable}" perm="a+x"/>
