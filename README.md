@@ -22,7 +22,7 @@ Then you can simply call `ant dist` to create a *dist* folder with everything gl
 SYNOPSIS
 --------
 	
-	glaciercmd [-c <FILE>] -d | -h <COMMAND> | -i | -j | -l <TYPE> | -m | -n | -u | -v    [-k <KEY>]    [-r <REGION>] [-s <SECRET>]
+	glaciercmd [-c <FILE>] -d | -h <COMMAND> | -i | -j | -l <TYPE> | -m | -n | -o | -u | -v    [-k <KEY>]     [-r <REGION>] [-s <SECRET>]
 
 **HELP**
 
@@ -59,6 +59,10 @@ SYNOPSIS
 **GETINVENTORY**
 
 	glaciercmd -j --job-id <JOBID> --vault <VAULT>
+
+**DELETEARCHIVE**
+
+	glaciercmd --archive <ARCHIVE> -o --vault <VAULT>
 
 OPTIONS
 -------
@@ -113,6 +117,10 @@ Request a download from Glacier. This command returns a job id which can be fed 
 **-n** **--get-download** 
 
 Retrieve a download from Glacier. If the download is not yet available, this method will block until it is.
+
+**-o** **--delete-archive** 
+
+Delete an archive from a vault.
 
 **--output** *OUTPUT* 
 
