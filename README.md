@@ -175,7 +175,7 @@ REGIONS
 
 BUGS
 ----
-1. The  DOWNLOAD  mode  currently only works for the VIRGINIA region, because of a bug in the AWS SDK. All other regions will cause an exception, because the SDK contains hardcoded references to the VIRGINIA region.
+No known bugs currently exist.
 
 AUTHOR
 ------
