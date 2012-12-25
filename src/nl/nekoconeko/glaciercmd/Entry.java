@@ -149,6 +149,10 @@ public class Entry {
 				System.exit(-1);
 			}
 			Formatter.printInfoLine("Download completed");
+		} else if (Configuration.getMode() == ModeType.DELETEARCHIVE) {
+			Configuration.load(ModeType.DELETEARCHIVE, args);
+			Formatter.printInfoLine(String.format("Deleting archive with id '%s' from vault '%s'", Configuration.getArchive(), Configuration.getVault()));
+			gc.deleteArchive(Configuration.getVault(), Configuration.getArchive());
 		} else {
 			Formatter.printErrorLine("WHA-HUH!?");
 			System.exit(-1);

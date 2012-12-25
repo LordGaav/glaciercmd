@@ -53,6 +53,7 @@ public class ConfigModes {
 		ConfigParameter getinventorymode = new ConfigParameter("j", "get-inventory", false, "Retrieve an inventory from Glacier. If the inventory is not yet available, this method will block until it is.");
 		ConfigParameter initiatedownloadmode = new ConfigParameter("m", "init-download", false, "Request a download from Glacier. This command returns a job id which can be fed to get-download.");
 		ConfigParameter getdownloadmode = new ConfigParameter("n", "get-download", false, "Retrieve a download from Glacier. If the download is not yet available, this method will block until it is.");
+		ConfigParameter deletearchivemode = new ConfigParameter("o", "delete-archive", false, "Delete an archive from a vault.");
 
 		// Selectors
 		ConfigParameter vault = new ConfigParameter("vault", true, "VAULT", "Select this vault");
@@ -74,6 +75,7 @@ public class ConfigModes {
 		modes.addOption(getinventorymode);
 		modes.addOption(initiatedownloadmode);
 		modes.addOption(getdownloadmode);
+		modes.addOption(deletearchivemode);
 		modes.setRequired(true);
 
 		// Options for root
@@ -127,6 +129,12 @@ public class ConfigModes {
 		get_download.addRequiredOption(jobid);
 		get_download.addRequiredOption(outputfile);
 
+		// Options for delete-archive
+		ConfigMode delete_archive = new ConfigMode();
+		delete_archive.addRequiredOption(deletearchivemode);
+		delete_archive.addRequiredOption(vault);
+		delete_archive.addRequiredOption(archive);
+
 		// Options for help
 		ConfigMode help = new ConfigMode();
 		help.addRequiredOption(helpmode);
@@ -145,6 +153,7 @@ public class ConfigModes {
 		ConfigModes.addMode(ModeType.GETINVENTORY, get_inventory);
 		ConfigModes.addMode(ModeType.INITIATEDOWNLOAD, init_download);
 		ConfigModes.addMode(ModeType.GETDOWNLOAD, get_download);
+		ConfigModes.addMode(ModeType.DELETEARCHIVE, delete_archive);
 	}
 
 	private static void addMode(ModeType type, ConfigMode mode) {

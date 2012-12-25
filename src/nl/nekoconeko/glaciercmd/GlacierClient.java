@@ -35,6 +35,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
+import com.amazonaws.services.glacier.model.DeleteArchiveRequest;
 import com.amazonaws.services.glacier.model.DescribeVaultOutput;
 import com.amazonaws.services.glacier.model.DescribeVaultRequest;
 import com.amazonaws.services.glacier.model.DescribeVaultResult;
@@ -214,5 +215,13 @@ public class GlacierClient {
 			}
 		}
 		Formatter.printErrorLine("Retrieved archive to " + filename);
+	}
+
+	protected void deleteArchive(String vault, String archiveId) {
+		DeleteArchiveRequest deleteArchiveRequest = new DeleteArchiveRequest();
+		deleteArchiveRequest.setVaultName(vault);
+		deleteArchiveRequest.setArchiveId(archiveId);
+
+		client.deleteArchive(deleteArchiveRequest);
 	}
 }
