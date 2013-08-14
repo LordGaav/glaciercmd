@@ -1,6 +1,23 @@
-bin
-doc/*.1
-dist
-classes
+## Working directories
+/bin
+/classes
+/dist
+
+## Config files
+/*.config
 /*.prop
+
+## Ant generated files
 /glaciercmd*
+/doc/*.1
+
+## Debian build files
+/debian/*.1
+/debian/*.install
+/debian/*.manifest
+/debian/files
+/debian/tmp
+/debian/*.log
+/debian/*.substvars
+/debian/glaciercmd
+/debian/*.README.*
