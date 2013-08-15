@@ -1,0 +1,58 @@
+glaciercmd (0.2) precise; urgency=low
+
+  * Exectuable script now handles symlinks properly.
+  * Add delete-archive mode
+  * Update README for delete-archive mode
+  * Update AWS SDK to 1.3.27
+  * Remove DOWNLOAD mode bug reference, because we updated the SDK.
+  * Bump version, update changelog
+
+ -- Nick Douma <n.douma@nekoconeko.nl>  Thu, 15 Aug 2013 10:30:08 +0200
+
+glaciercmd (0.1.1) UNRELEASED; urgency=low
+
+  * Actually check if a command requires an argument before marking it as such in the docs.
+  * Update README
+  * LIST mode doesn't need region, key, secret and config explictly defined
+  * Make dist glaciercmd script work from any directory
+  * Put bandage on polling for job completion
+  * int is too small for an archive's size
+  * Bump version and regenerate README
+
+ -- Nick Douma <n.douma@nekoconeko.nl>  Tue, 30 Oct 2012 23:08:15 +0100
+
+glaciercmd (0.1) raring; urgency=low
+
+  * Setup Eclipse build environment
+  * Add AWS required libraries, and include Apache Commons CLI.
+  * Add basic abstraction of AWS Glacier commands
+  * Add Apache Commons Configuration and Lang libraries
+  * Add Configuration infrastructure
+  * Add Version metadata
+  * Add Types
+  * Add console output Formatter
+  * Add parsing of AWS regions
+  * Add Ant build file
+  * Add glaciercmd Entry point
+  * Add ManPage generator
+  * Add Readme generator
+  * Regenerate README
+  * Add vault and job-id to Configuration
+  * Add UPLOAD and DOWNLOAD to ConfigModes
+  * Add init-inventory and get-inventory to ConfigModes
+  * Add initiateRetrieveVaultInventory and retrieveVaultInventoryJob to GlacierClient
+  * Add handling of inventory modes to Entry
+  * Make sure to reparse cli arguments when selecting LIST mode
+  * Check if a vault was specified before using it in LIST ARCHIVE.
+  * Map VaultInventory JSON response to proper object, and make output fancy
+  * Add licensing information
+  * Fix recursive call in setVault and setJobId
+  * Add UPLOAD and DOWNLOAD modes to Entry
+  * Add known AWS SDK bug to readme and man page
+  * Add REGIONS to readme and man-page
+  * ADD INITIATEDOWNLOAD and GETDOWNLOAD modes
+  * Make sure that the packaged executable is actually executable
+  * Add source code for Jackson JSON library
+  * Regenerate README
+
+ -- Nick Douma <n.douma@nekoconeko.nl>  Sat, 25 Aug 2012 17:24:11 +0200

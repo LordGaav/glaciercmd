@@ -164,10 +164,8 @@ public class ManPage {
 	private String getBugsSection() {
 		StringBuilder section = new StringBuilder();
 		section.append(".SH BUGS\n");
-		section.append(".IP 1 4\n");
-		section.append("The DOWNLOAD mode currently only works for the VIRGINIA region, because of a bug in the AWS SDK. ");
-		section.append("All other regions will cause an exception, because the SDK contains hardcoded references to the VIRGINIA region.\n");
-		section.append(".RE\n\n");
+		section.append("No known bugs currently exist.");
+		section.append("\n\n");
 		return section.toString();
 	}
 

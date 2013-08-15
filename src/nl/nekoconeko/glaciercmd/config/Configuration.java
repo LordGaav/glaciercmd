@@ -259,6 +259,8 @@ public class Configuration {
 					Configuration.setMode(ModeType.INITIATEDOWNLOAD);
 				} else if (opt.getLongOpt().equals("get-download")) {
 					Configuration.setMode(ModeType.GETDOWNLOAD);
+				} else if (opt.getLongOpt().equals("delete-archive")) {
+					Configuration.setMode(ModeType.DELETEARCHIVE);
 				} else if (opt.getLongOpt().equals("region")) {
 					Configuration.setRegion(AWSGlacierRegion.valueOf(cli.getOptionValue(opt.getLongOpt()).toUpperCase()));
 				} else {
