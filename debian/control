@@ -2,7 +2,7 @@ Source: glaciercmd
 Priority: extra
 Maintainer: Nick Douma <n.douma@nekoconeko.nl>
 Build-Depends: debhelper (>= 7.0.50~)
-Build-Depends-Indep: default-jdk, ant, javahelper (>=0.25)
+Build-Depends-Indep: default-jdk, ant, javahelper (>=0.25), git-buildpackage, git
 Standards-Version: 3.9.0
 Section: utils
 
