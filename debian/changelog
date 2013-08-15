@@ -1,12 +1,13 @@
-glaciercmd (0.2) UNRELEASED; urgency=low
+glaciercmd (0.2) precise; urgency=low
 
   * Exectuable script now handles symlinks properly.
   * Add delete-archive mode
   * Update README for delete-archive mode
   * Update AWS SDK to 1.3.27
   * Remove DOWNLOAD mode bug reference, because we updated the SDK.
+  * Bump version, update changelog
 
- -- Nick Douma <n.douma@nekoconeko.nl>  Thu, 15 Aug 2013 00:04:04 +0200
+ -- Nick Douma <n.douma@nekoconeko.nl>  Thu, 15 Aug 2013 10:30:08 +0200
 
 glaciercmd (0.1.1) UNRELEASED; urgency=low
 
