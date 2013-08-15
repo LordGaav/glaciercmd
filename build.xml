@@ -174,7 +174,7 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 		<copy file="README.md" tofile="${dist.dir}/README.md" />
 		<copy file="LICENSE" tofile="${dist.dir}/LICENSE" />
 
-		<jar destfile="${dist.dir}/${executable}-${version}.jar" basedir="${class.root}">
+		<jar destfile="${dist.dir}/${executable}.jar" basedir="${class.root}">
 			<manifest>
 				<attribute name="Implementation-Vendor" value="Nekoconeko.nl"/>
 				<attribute name="Implementation-Title" value="${executable}"/>
@@ -194,7 +194,7 @@ else
         FILE="$0"
 fi
 DIR="$( cd "$( dirname "$FILE" )" &amp;&amp; pwd )"
-java -jar ${DIR}/${executable}-${version}.jar ${root.package}.${entry.point} "$$@"</echo>
+java -jar ${DIR}/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 		
 		<chmod file="${dist.dir}/${executable}" perm="a+x"/>
 	</target>
@@ -229,7 +229,7 @@ java -jar ${DIR}/${executable}-${version}.jar ${root.package}.${entry.point} "$$
 	</target>
 
 	<target name="package-debian" depends="git-revision,dist" description="Prepare project for Debian packaging">
-		<echo file="debian/${executable}.install" append="false">dist/${executable}-${version}.jar ${debian.bin.dir}
+		<echo file="debian/${executable}.install" append="false">dist/${executable}.jar ${debian.bin.dir}
 dist/${executable} ${debian.bin.dir}
 </echo>
 		<echo file="debian/jars" append="false">${debian.pkg.jars}</echo>
