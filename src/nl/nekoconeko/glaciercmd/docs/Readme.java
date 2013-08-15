@@ -154,8 +154,7 @@ public class Readme {
 		StringBuilder section = new StringBuilder();
 		section.append("BUGS\n");
 		section.append("----\n");
-		section.append("1. The  DOWNLOAD  mode  currently only works for the VIRGINIA region, because of a bug in the AWS SDK. ");
-		section.append("All other regions will cause an exception, because the SDK contains hardcoded references to the VIRGINIA region.\n\n");
+		section.append("No known bugs currently exist.\n\n");
 		return section.toString();
 	}
 

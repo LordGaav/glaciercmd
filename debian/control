@@ -1,0 +1,21 @@
+Source: glaciercmd
+Priority: extra
+Maintainer: Nick Douma <n.douma@nekoconeko.nl>
+Build-Depends: debhelper (>= 7.0.50~)
+Build-Depends-Indep: default-jdk, ant, javahelper (>=0.25)
+Standards-Version: 3.9.0
+Section: utils
+
+Package: glaciercmd
+Architecture: all
+Depends: ${misc:Depends}, coreutils, default-jre
+Description: glaciercmd - a simple tool to consume Amazon's Glacier AWS service
+ glaciercmd is a simple tool to consume Amazon's Glacier AWS service, using the AWS REST API.
+ .
+ There are several modes of operation, all of which can be found in the synopsis below. Each mode has a different set of required and optional arguments, which can also be found in the synopsis. Help mode can be used in a context sensitive manner. For example, '-h' will show all the modes, and '-h LIST' will show help about the LIST mode.
+ .
+ All commands require proper authentication. This can be provided on the command line by using '-k -s -r' or by creating a configuration file and specifying it with '-c config-file'.
+ .
+ glaciercmd is licensed under the GPLv3 license. For more information, see the LICENSE file.
+ This project uses libraries and routines which may have a different license. Refer to the included licenses in the source files and/or JAR files for more information.
+
