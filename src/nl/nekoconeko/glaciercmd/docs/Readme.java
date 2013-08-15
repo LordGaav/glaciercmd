@@ -175,6 +175,7 @@ public class Readme {
 		section.append("2. Apache Ant >= 1.8\n\n");
 		section.append(String.format("Then you can simply call `ant dist` to create a *dist* folder with everything %s needs to run. ", Version.PROJECT_NAME));
 		section.append("You can also use `ant package-tar` to create a tarball\n\n");
+		section.append("Alternatively, if using Ubuntu or Debian, you can try using the glaciercmd PPA at: https://launchpad.net/~lordgaav/+archive/glaciercmd\n\n");
 
 		return section.toString();
 	}
