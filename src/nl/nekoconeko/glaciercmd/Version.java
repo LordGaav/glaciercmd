@@ -26,9 +26,9 @@ public final class Version {
 	/**
 	 * Official release version of the project
 	 */
-	public static final String RELEASE_VERSION = "0.2";
+	public static final String RELEASE_VERSION = "0.2.1";
 	/**
 	 * Actual Git revision according to `git describe` during bumping
 	 */
-	public static final String BUILD_VERSION = "6801fb9";
+	public static final String BUILD_VERSION = "b0e4e09";
 }
