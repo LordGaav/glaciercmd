@@ -1,3 +1,13 @@
+glaciercmd (0.2.1) precise; urgency=low
+
+  * Remove version number from dist jar file again, it breaks PPA building
+  * Changes to make build system work with Ubuntu PPA
+  * Add PPA url to Readme
+  * Add source package and PPA upload target to Debian Makefile
+  * Bump version, update changelog
+
+ -- Nick Douma <n.douma@nekoconeko.nl>  Thu, 29 Aug 2013 14:02:51 +0200
+
 glaciercmd (0.2~ppa1) precise; urgency=low
 
   * Exectuable script now handles symlinks properly.
