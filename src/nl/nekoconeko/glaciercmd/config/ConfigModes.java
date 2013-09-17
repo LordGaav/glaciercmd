@@ -96,7 +96,7 @@ public class ConfigModes {
 		upload.addRequiredOption(uploadmode);
 		upload.addRequiredOption(vault);
 		upload.addRequiredOption(inputfile);
-		upload.addRequiredOption(description);
+		upload.addOptionalOption(description);
 
 		// Options for download
 		ConfigMode download = new ConfigMode();
