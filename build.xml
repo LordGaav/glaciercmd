@@ -83,23 +83,6 @@
 		<echo>${relpath}</echo>
 	</target>
 
-	<target name="clean" description="Remove all generated files">
-		<delete dir="${class.root}" />
-		<delete dir="${dist.dir}" />
-		<delete file="${executable}" />
-		<delete file="${executable}-debug" />
-		<delete>
-			<fileset dir="${basedir}" includes="${executable}-*.tar.bz2" />
-			<fileset dir="${basedir}/debian">
-				<include name="${executable}.1" />
-				<include name="${executable}.install" />
-				<include name="${executable}.manifest" />
-			</fileset>
-		</delete>
-		<delete dir="${debian.tmp.dir}" />
-		<delete dir="${debian.dir}/${executable}" />
-	</target>
-
 	<!-- Create our runtime subdirectories and copy resources into them -->
 	<target name="prepare" depends="git-revision" description="Sets up build structures">
 		<delete dir="${class.root}"/>
@@ -111,6 +94,24 @@
 				<include name="**/*.properties"/>
 			</fileset>
 		</copy>
+	</target>
+
+	<target name="clean" description="Remove all generated files">
+		<delete dir="${class.root}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${bin.dir}" />
+		<delete file="${executable}" />
+		<delete file="${executable}-debug" />
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="${executable}-*.tar.bz2" />
+				<include name="*.config" />
+			</fileset>
+			<fileset dir="${basedir}/debian">
+				<include name="${executable}.*" />
+			</fileset>
+		</delete>
+		<delete dir="${debian.dir}/${executable}" />
 	</target>
 
 	<!-- Compile the java source of the project -->
@@ -188,15 +189,41 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 		</jar>
 
 		<echo file="${dist.dir}/${executable}" append="false">#!/bin/sh
-if [ -L $0 ]; then
-        FILE="$( readlink -f "$0" )"
+if [ -L "$0" ]; then
+	CMD="$(readlink -f "$0")"
 else
-        FILE="$0"
+	CMD="$0"
 fi
-DIR="$( cd "$( dirname "$FILE" )" &amp;&amp; pwd )"
-java -jar ${DIR}/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
+
+DIR="$( cd "$( dirname "$CMD" )" &amp;&amp; pwd )"
+java -jar $DIR/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 		
 		<chmod file="${dist.dir}/${executable}" perm="a+x"/>
+	</target>
+
+	<target name="package-debian" depends="git-revision,dist" description="Prepare project for Debian packaging">
+		<echo file="debian/${executable}.install" append="false">dist/${executable}.jar ${debian.bin.dir}
+dist/${executable} ${debian.bin.dir}
+</echo>
+		<echo file="debian/jars" append="false">${debian.pkg.jars}</echo>
+		<echo file="debian/jars" append="false">${debian.pkg.jars}</echo>
+		<echo file="debian/jars_dest" append="false">${debian.pkg.jars.dest}</echo>
+		<exec executable="paste" output="debian/${executable}.install.tmp" append="false">
+			<arg value="-d "/>
+			<arg value="debian/jars"/>
+			<arg value="debian/jars_dest"/>
+		</exec>
+		<exec executable="sed" output="debian/${executable}.install" append="true">
+			<arg value="s#^\./##;"/>
+			<arg value="debian/${executable}.install.tmp"/>
+		</exec>
+
+		<delete file="debian/jars" />
+		<delete file="debian/jars_dest" />
+		<delete file="debian/${executable}.install.tmp" />
+		<copy file="${docs.dir}/${executable}.1" tofile="debian/${executable}.1" />
+		<echo file="debian/${executable}.manpages" append="false">${docs.dir}/${executable}.1</echo>
+		<copy file="README.md" tofile="debian/${executable}.README.Debian" />
 	</target>
 
 	<target name="bump-version" depends="git-revision" description="Bump the BUILD_VERSION version number">
@@ -227,35 +254,4 @@ java -jar ${DIR}/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 		</tar>
 		<move tofile="${dist.dir}" file="${executable}-${version}" />
 	</target>
-
-	<target name="package-debian" depends="git-revision,dist" description="Prepare project for Debian packaging">
-		<echo file="debian/${executable}.install" append="false">dist/${executable}.jar ${debian.bin.dir}
-dist/${executable} ${debian.bin.dir}
-</echo>
-		<echo file="debian/jars" append="false">${debian.pkg.jars}</echo>
-		<echo file="debian/jars_dest" append="false">${debian.pkg.jars.dest}</echo>
-		<exec executable="paste" output="debian/${executable}.install" append="true">
-			<arg value="-d "/>
-			<arg value="debian/jars"/>
-			<arg value="debian/jars_dest"/>
-		</exec>
-
-		<delete file="debian/jars" />
-		<delete file="debian/jars_dest" />
-		<copy file="${docs.dir}/${executable}.1" tofile="debian/${executable}.1" />
-		<echo file="debian/${executable}.manpages" append="false">${docs.dir}/${executable}.1</echo>
-		<copy file="README.md" tofile="debian/${executable}.README.Debian" />
-
-		<mkdir dir="${debian.tmp.dir}" />
-
-		<copy todir="${debian.tmp.dir}">
-			<fileset dir="${dist.dir}">
-				<include name="${executable}" />
-				<include name="${executable}*.jar" />
-				<include name="lib/**/*.jar" />
-			</fileset>
-		</copy>
-		<chmod file="${debian.tmp.dir}/${executable}" perm="a+x" />
-	</target>
-
 </project>
