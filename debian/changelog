@@ -1,3 +1,10 @@
+glaciercmd (0.2.2) precise; urgency=high
+
+  * Rework parts of the Debian build script
+  * Bump version, update changelog
+
+ -- Nick Douma <n.douma@nekoconeko.nl>  Sat, 08 Feb 2014 00:43:22 +0100
+
 glaciercmd (0.2.1) precise; urgency=low
 
   * Remove version number from dist jar file again, it breaks PPA building
