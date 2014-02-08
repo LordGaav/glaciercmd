@@ -31,7 +31,6 @@
 	<property name="entry.point" value="Entry"/>
 	<property name="executable" value="glaciercmd"/>
 	<property name="debian.dir" value="debian"/>
-	<property name="debian.tmp.dir" value="${debian.dir}/tmp"/>
 	<property name="debian.bin.dir" value="usr/share/${executable}"/>
 	<property name="debian.lib.dir" value="${debian.bin.dir}/lib"/>
 
@@ -41,6 +40,8 @@
 		<pathelement location="${class.root}"/> 
 		<fileset dir="${libs.dir}">
 			<include name="**/*.jar"/>
+			<exclude name="**/*-javadoc.jar"/>
+			<exclude name="**/*-sources.jar"/>
 		</fileset>
 	</path>
 
@@ -70,12 +71,6 @@
 	<pathconvert property="debian.pkg.jars" pathsep="${line.separator}">
 		<path refid="dist_libraries"/>
 		<map from="${basedir}" to="."/>
-	</pathconvert>
-
-	<pathconvert property="debian.pkg.jars.dest" pathsep="${line.separator}">
-		<path refid="dist_libraries"/>
-		<map from="${basedir}/${libs.dir}" to="${debian.lib.dir}"/>
-		<mapper type="regexp" from="(^[\w\-/]+)/.*" to="\1"/>
 	</pathconvert>
 
 	<target name="print-classpath" description="Show the dependency class path">
@@ -173,7 +168,8 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 
 		<copy file="${docs.dir}/${executable}.1" tofile="${dist.dir}/${docs.dir}/${executable}.1" />
 		<copy file="README.md" tofile="${dist.dir}/README.md" />
-		<copy file="LICENSE" tofile="${dist.dir}/LICENSE" />
+		<mkdir dir="${class.root}/META-INF" />
+		<copy file="LICENSE" tofile="${class.root}/META-INF/LICENSE" />
 
 		<jar destfile="${dist.dir}/${executable}.jar" basedir="${class.root}">
 			<manifest>
@@ -181,12 +177,13 @@ java -Xdebug -Xrunjdwp:transport=dt_socket,address=8998,server=y -classpath ${pr
 				<attribute name="Implementation-Title" value="${executable}"/>
 				<attribute name="Implementation-Version" value="${version}"/>
 				<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="License" value="GPLv3"/>
-				<attribute name="Sealed" value="true"/>
+				<attribute name="Sealed" value="false"/>
 				<attribute name="Class-Path" value="${jar.class.path}"/>
 				<attribute name="Main-Class" value="${root.package}.${entry.point}"/>
 			</manifest>
 		</jar>
+
+		<delete dir="${class.root}/META-INF" />
 
 		<echo file="${dist.dir}/${executable}" append="false">#!/bin/sh
 if [ -L "$0" ]; then
@@ -206,20 +203,18 @@ java -jar $DIR/${executable}.jar ${root.package}.${entry.point} "$$@"</echo>
 dist/${executable} ${debian.bin.dir}
 </echo>
 		<echo file="debian/jars" append="false">${debian.pkg.jars}</echo>
-		<echo file="debian/jars" append="false">${debian.pkg.jars}</echo>
-		<echo file="debian/jars_dest" append="false">${debian.pkg.jars.dest}</echo>
 		<exec executable="paste" output="debian/${executable}.install.tmp" append="false">
 			<arg value="-d "/>
 			<arg value="debian/jars"/>
-			<arg value="debian/jars_dest"/>
+			<arg value="debian/jars"/>
 		</exec>
 		<exec executable="sed" output="debian/${executable}.install" append="true">
-			<arg value="s#^\./##;"/>
+			<arg value="-r"/>
+			<arg value="s#^\./##;s# \./# #;s# ([a-zA-Z\/-]+)/.*# ${debian.bin.dir}/\1#;"/>
 			<arg value="debian/${executable}.install.tmp"/>
 		</exec>
 
 		<delete file="debian/jars" />
-		<delete file="debian/jars_dest" />
 		<delete file="debian/${executable}.install.tmp" />
 		<copy file="${docs.dir}/${executable}.1" tofile="debian/${executable}.1" />
 		<echo file="debian/${executable}.manpages" append="false">${docs.dir}/${executable}.1</echo>
