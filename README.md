@@ -40,7 +40,7 @@ SYNOPSIS
 
 **UPLOAD**
 
-	glaciercmd --description <DESC> --input <INPUT> -u --vault <VAULT>
+	glaciercmd [--description <DESC>] --input <INPUT> -u --vault <VAULT>
 
 **DOWNLOAD**
 
@@ -82,7 +82,7 @@ Download file from a vault. Note: this command will block until the file has bee
 
 **--description** *DESC* 
 
-Use this description
+Use this description. If omitted the name of the file is used.
 
 **-h** **--help** *COMMAND* 
 

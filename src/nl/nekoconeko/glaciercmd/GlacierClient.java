@@ -74,8 +74,14 @@ public class GlacierClient {
 	protected UploadResult uploadFile(String vault, String filename, String description) {
 		ArchiveTransferManager atm = new ArchiveTransferManager(this.client, this.credentials);
 		UploadResult res = null;
-		try {
-			res = atm.upload(vault, description, new File(filename));
+                
+                File toUpload = new File(filename);
+                if ( description == null ) {
+                    description = toUpload.getName();
+                }
+                
+                try {
+			res = atm.upload(vault, description, toUpload);
 		} catch (AmazonServiceException e) {
 			System.err.println("An error occured at Amazon AWS: " + e.getLocalizedMessage());
 			System.exit(1);

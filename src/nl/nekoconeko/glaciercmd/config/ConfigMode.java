@@ -35,6 +35,11 @@ public class ConfigMode extends Options {
 		opt.setRequired(true);
 		this.addOption(opt);
 	}
+        
+        public void addOptionalOption(Option opt) {
+                opt.setRequired(false);
+                this.addOption(opt);
+        }
 
 	public List<ConfigParameter> getAllOptions() {
 		List<ConfigParameter> all = new ArrayList<ConfigParameter>(this.getOptions().size());
